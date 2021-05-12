@@ -5,17 +5,17 @@ const notebook = [];
 const note = {
   title: '',
   link: '',
-  timeSpamt: 0,
+  timeStamp: 0,
   quickNote: '',
 };
 
 const form = document.forms['inputForm'];
 form.onsubmit = (e) => {
   e.preventDefault();
-  const { title, link, stamp, note } = e.target.elements;
-  if (title.checked) {
-    console.log('hello title checked');
-  }
+  const { title, link, stamp, qckNote } = e.target.elements;
+  sendRequest();
+  note.quickNote = qckNote.value;
+  console.log(note);
 };
 
 const downloadToFile = (content, filename, contentType) => {
@@ -51,4 +51,8 @@ const sendRequest = () => {
 const continueButton = document.getElementById('continue');
 continueButton.addEventListener('click', sendRequest);
 
-browser.runtime.onMessage.addListener((message) => );
+browser.runtime.onMessage.addListener((message) => {
+  note.title = message.title;
+  note.link = message.url;
+  note.timeStamp = message.timeStamp;
+});
