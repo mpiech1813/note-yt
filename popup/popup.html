@@ -1,0 +1,40 @@
+<!DOCTYPE html lang="en">
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="menu.css" />
+  </head>
+
+  <body>
+    <!-- <button>
+        <img src="/icons/video-player-7.png">
+      </button> -->
+    <form id="inputForm" onsubmit="return submitValidation()">
+      <label for="title">Title</label>
+      <input
+        type="checkbox"
+        id="title"
+        name="title"
+        value="title"
+        checked
+      /><br />
+      <label for="link">Link</label>
+      <input type="checkbox" id="link" name="link" value="link" checked /><br />
+      <label for="stamp">TimeStamp</label>
+      <input
+        type="checkbox"
+        id="stamp"
+        name="stamp"
+        value="stamp"
+        checked
+      /><br />
+      <input type="text" id="note" name="note" placeholder="Quick Note" /><br />
+      <input type="submit" name="submit" value="Submit" />
+    </form>
+    <button id="end">End</button>
+    <button id="continue">Continue</button>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
