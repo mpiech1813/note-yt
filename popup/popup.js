@@ -2,7 +2,7 @@
 
 const notebook = [];
 
-const note = {
+const currentNote = {
   title: '',
   link: '',
   timeStamp: 0,
@@ -12,10 +12,12 @@ const note = {
 const form = document.forms['inputForm'];
 form.onsubmit = (e) => {
   e.preventDefault();
-  const { title, link, stamp, qckNote } = e.target.elements;
+  const { title, link, stamp, note } = e.target.elements;
   sendRequest();
-  note.quickNote = qckNote.value;
-  console.log(note);
+  if (!title.value) {
+    currentNote.title = '';
+  }
+  currentNote.quickNote = note.value;
 };
 
 const downloadToFile = (content, filename, contentType) => {
@@ -30,8 +32,12 @@ const downloadToFile = (content, filename, contentType) => {
 };
 
 function createTXT() {
-  const textArea = 'hello world';
-  console.log(textArea);
+  let textArea = `
+    URL: ${currentNote.link}
+    Title: ${currentNote.title}
+    Time Stamp: ${currentNote.timeStamp}
+    Quick Note: ${currentNote.quickNote}
+  `;
   downloadToFile(textArea, 'my-new-file.txt', 'text/plain');
 }
 
@@ -52,7 +58,7 @@ const continueButton = document.getElementById('continue');
 continueButton.addEventListener('click', sendRequest);
 
 browser.runtime.onMessage.addListener((message) => {
-  note.title = message.title;
-  note.link = message.url;
-  note.timeStamp = message.timeStamp;
+  currentNote.title = message.title;
+  currentNote.link = message.url;
+  currentNote.timeStamp = message.timeStamp;
 });
