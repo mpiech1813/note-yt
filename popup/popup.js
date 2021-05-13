@@ -13,12 +13,15 @@ const form = document.forms['inputForm'];
 form.onsubmit = (e) => {
   e.preventDefault();
   const { title, link, stamp, note } = e.target.elements;
-  sendRequest();
-  if (!title.value) {
-    currentNote.title = '';
-  }
+
   currentNote.quickNote = note.value;
   form.reset();
+
+  if (!title.checked) delete currentNote.title;
+  if (!link.checked) delete currentNote.link;
+  if (!stamp.checked) delete currentNote.timeStamp;
+
+  sendRequest();
 };
 
 const downloadToFile = (content, filename, contentType) => {
@@ -39,7 +42,7 @@ function createTXT() {
     Time Stamp: ${currentNote.timeStamp}
     Quick Note: ${currentNote.quickNote}
   `;
-  downloadToFile(textArea, 'my-new-file.txt', 'text/plain');
+  downloadToFile(textArea, `Note.txt`, 'text/plain');
 }
 
 const endButton = document.getElementById('end');
@@ -56,7 +59,7 @@ const sendRequest = () => {
 };
 
 const continueButton = document.getElementById('continue');
-continueButton.addEventListener('click', sendRequest);
+continueButton.addEventListener('click', () => console.log(currentNote));
 
 browser.runtime.onMessage.addListener((message) => {
   currentNote.title = message.title;
