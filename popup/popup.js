@@ -58,8 +58,28 @@ const sendRequest = () => {
   });
 };
 
+function copyToClipboard() {
+  let textArea = `
+    URL: ${currentNote.link}
+    Title: ${currentNote.title}
+    Time Stamp: ${currentNote.timeStamp}
+    Quick Note: ${currentNote.quickNote}
+  `;
+
+  navigator.clipboard.writeText(textArea).then(
+    function () {
+      /* clipboard successfully set */
+      console.log('clip success');
+    },
+    function () {
+      console.log('clip failed');
+      /* clipboard write failed */
+    }
+  );
+}
+
 const continueButton = document.getElementById('continue');
-continueButton.addEventListener('click', () => console.log(currentNote));
+continueButton.addEventListener('click', copyToClipboard);
 
 browser.runtime.onMessage.addListener((message) => {
   currentNote.title = message.title;
