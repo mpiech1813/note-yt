@@ -18,6 +18,7 @@ form.onsubmit = (e) => {
     currentNote.title = '';
   }
   currentNote.quickNote = note.value;
+  form.reset();
 };
 
 const downloadToFile = (content, filename, contentType) => {
