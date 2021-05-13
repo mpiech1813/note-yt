@@ -1,7 +1,8 @@
 const titleItem = document.querySelector('h1 > yt-formatted-string').innerText;
 const timeStamp = document.querySelector('span.ytp-time-current').innerText;
+let url = window.location.href;
 
-const data = { title: titleItem, timeStamp };
+const data = { title: titleItem, timeStamp, url };
 // .querySelectorAll('yt-formatted-string')
 
 // const title = 'hello world';
