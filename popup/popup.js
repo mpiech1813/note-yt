@@ -36,12 +36,27 @@ const downloadToFile = (content, filename, contentType) => {
 };
 
 function createTXT() {
-  let textArea = `
+  let textArea;
+  if (notebook.length === 0) {
+    textArea = `
     URL: ${currentNote.link}
     Title: ${currentNote.title}
     Time Stamp: ${currentNote.timeStamp}
     Quick Note: ${currentNote.quickNote}
-  `;
+    `;
+  } else {
+    notebook.forEach((note) => {
+      textArea += `
+      URL: ${note.link}
+      Title: ${note.title}
+      Time Stamp: ${note.timeStamp}
+      Quick Note: ${note.quickNote}
+      `;
+    });
+
+    displayDataFromStorage();
+  }
+
   downloadToFile(textArea, `Note.txt`, 'text/plain');
 }
 
@@ -101,7 +116,7 @@ const loadData = async () => {
   let notebookFromStore = await browser.storage.sync.get('notebook');
   console.log('notebook from store', notebookFromStore);
   if (notebookFromStore.notebook) notebook = notebookFromStore.notebook;
-  console.log(notebook);
+  console.log('notebook from state', notebook);
 };
 
 document.addEventListener('DOMContentLoaded', loadData);
