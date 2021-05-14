@@ -1,8 +1,8 @@
 // popup must find a way to listen to data, maybe cookies?
 
-const notebook = [];
+let notebook = [];
 
-const currentNote = {
+let currentNote = {
   title: '',
   link: '',
   timeStamp: 0,
@@ -86,3 +86,29 @@ browser.runtime.onMessage.addListener((message) => {
   currentNote.link = message.url;
   currentNote.timeStamp = message.timeStamp;
 });
+
+const addToLocalStorage = () => {
+  notebook.push(currentNote);
+  browser.storage.sync.set({ notebook });
+  // console.log(notebook);
+};
+
+const addToLocalStorageButton = document.getElementById('addLS');
+addToLocalStorageButton.addEventListener('click', addToLocalStorage);
+
+const loadData = async () => {
+  console.log('loadData fired');
+  let notebookFromStore = await browser.storage.sync.get('notebook');
+  console.log('notebook from store', notebookFromStore);
+  if (notebookFromStore.notebook) notebook = notebookFromStore.notebook;
+  console.log(notebook);
+};
+
+document.addEventListener('DOMContentLoaded', loadData);
+
+const displayDataFromStorage = async () => {
+  await browser.storage.sync.remove('notebook');
+};
+
+const displayButton = document.getElementById('display');
+displayButton.addEventListener('click', displayDataFromStorage);
