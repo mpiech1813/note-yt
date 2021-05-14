@@ -1,5 +1,7 @@
 const titleItem = document.querySelector('h1 > yt-formatted-string').innerText;
-const timeStamp = document.querySelector('span.ytp-time-current').innerText;
+const timeStamp = document.querySelector(
+  'div > span.ytp-time-current'
+).innerText;
 let url = window.location.href;
 
 const data = { title: titleItem, timeStamp, url };
