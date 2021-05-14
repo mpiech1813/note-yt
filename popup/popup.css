@@ -1,13 +1,6 @@
 body {
-  height: 200px;
-  width: 140px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 0%;
-  margin: 0px;
+  background-color: 141f1f;
+  color: white;
 }
 
 /* button {
@@ -18,11 +11,22 @@ body {
   cursor: pointer;
 } */
 
-input {
-  width: 100px;
-  text-size-adjust: 0.5rem;
+@keyframes neonGlow {
+  0% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: 2px 2px 4px greenyellow;
+  }
+  100% {
+    box-shadow: none;
+  }
 }
 
-label {
-  font-size: 0.6rem;
+input {
+  animation: 3s neonGlow infinite;
+}
+
+button {
+  animation: 3s neonGlow infinite;
 }
