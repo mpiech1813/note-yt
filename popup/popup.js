@@ -105,7 +105,13 @@ browser.runtime.onMessage.addListener((message) => {
 const addToLocalStorage = () => {
   notebook.push(currentNote);
   browser.storage.sync.set({ notebook });
+  counterUpdate();
   // console.log(notebook);
+};
+
+const counterUpdate = () => {
+  const counter = document.getElementById('counter');
+  counter.innerText = notebook.length;
 };
 
 const addToLocalStorageButton = document.getElementById('addLS');
@@ -117,12 +123,14 @@ const loadData = async () => {
   console.log('notebook from store', notebookFromStore);
   if (notebookFromStore.notebook) notebook = notebookFromStore.notebook;
   console.log('notebook from state', notebook);
+  counterUpdate();
 };
 
 document.addEventListener('DOMContentLoaded', loadData);
 
 const displayDataFromStorage = async () => {
   await browser.storage.sync.remove('notebook');
+  counterUpdate();
 };
 
 const displayButton = document.getElementById('display');
