@@ -1,5 +1,3 @@
-// popup must find a way to listen to data, maybe cookies?
-
 let notebook = [];
 
 let currentNote = {
@@ -17,12 +15,10 @@ form.onsubmit = (e) => {
   currentNote.quickNote = note.value;
   form.reset();
 
-  if (!title.checked) delete currentNote.title;
-  if (!link.checked) delete currentNote.link;
-  if (!stamp.checked) delete currentNote.timeStamp;
-
   sendRequest();
 };
+
+// functions
 
 const downloadToFile = (content, filename, contentType) => {
   const a = document.createElement('a');
@@ -60,6 +56,9 @@ function createTXT() {
   downloadToFile(textArea, `Note.txt`, 'text/plain');
 }
 
+// binds
+
+// in extension communication:
 const endButton = document.getElementById('end');
 endButton.addEventListener('click', createTXT);
 // jeden
