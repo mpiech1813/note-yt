@@ -18,7 +18,7 @@ form.onsubmit = (e) => {
   sendRequest();
 };
 
-// functions
+// -------------------------   functions   -------------------------
 
 const downloadToFile = (content, filename, contentType) => {
   const a = document.createElement('a');
@@ -83,7 +83,26 @@ const addToLocalStorage = () => {
   // console.log(notebook);
 };
 
-// binds
+const counterUpdate = () => {
+  const counter = document.getElementById('counter');
+  counter.innerText = notebook.length;
+};
+
+const loadData = async () => {
+  console.log('loadData fired');
+  let notebookFromStore = await browser.storage.sync.get('notebook');
+  console.log('notebook from store', notebookFromStore);
+  if (notebookFromStore.notebook) notebook = notebookFromStore.notebook;
+  console.log('notebook from state', notebook);
+  counterUpdate();
+};
+
+const displayDataFromStorage = async () => {
+  await browser.storage.sync.remove('notebook');
+  counterUpdate();
+};
+
+// -------------------------   binds   -------------------------
 
 const endButton = document.getElementById('end');
 endButton.addEventListener('click', createTXT);
@@ -93,6 +112,9 @@ copyButton.addEventListener('click', copyToClipboard);
 
 const addToLocalStorageButton = document.getElementById('addLS');
 addToLocalStorageButton.addEventListener('click', addToLocalStorage);
+
+const displayButton = document.getElementById('display');
+displayButton.addEventListener('click', displayDataFromStorage);
 
 // in extension communication:
 // jeden
@@ -112,26 +134,4 @@ browser.runtime.onMessage.addListener((message) => {
   currentNote.timeStamp = message.timeStamp;
 });
 
-const counterUpdate = () => {
-  const counter = document.getElementById('counter');
-  counter.innerText = notebook.length;
-};
-
-const loadData = async () => {
-  console.log('loadData fired');
-  let notebookFromStore = await browser.storage.sync.get('notebook');
-  console.log('notebook from store', notebookFromStore);
-  if (notebookFromStore.notebook) notebook = notebookFromStore.notebook;
-  console.log('notebook from state', notebook);
-  counterUpdate();
-};
-
 document.addEventListener('DOMContentLoaded', loadData);
-
-const displayDataFromStorage = async () => {
-  await browser.storage.sync.remove('notebook');
-  counterUpdate();
-};
-
-const displayButton = document.getElementById('display');
-displayButton.addEventListener('click', displayDataFromStorage);
