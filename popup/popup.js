@@ -56,22 +56,6 @@ function createTXT() {
   downloadToFile(textArea, `Note.txt`, 'text/plain');
 }
 
-// binds
-
-// in extension communication:
-const endButton = document.getElementById('end');
-endButton.addEventListener('click', createTXT);
-// jeden
-function getActiveTab() {
-  return browser.tabs.query({ active: true, currentWindow: true });
-}
-// dwa
-const sendRequest = () => {
-  getActiveTab().then((tabs) => {
-    browser.tabs.sendMessage(tabs[0].id, 'kolok');
-  });
-};
-
 function copyToClipboard() {
   let textArea = `
     URL: ${currentNote.link}
@@ -91,6 +75,23 @@ function copyToClipboard() {
     }
   );
 }
+
+// binds
+
+const endButton = document.getElementById('end');
+endButton.addEventListener('click', createTXT);
+
+// in extension communication:
+// jeden
+function getActiveTab() {
+  return browser.tabs.query({ active: true, currentWindow: true });
+}
+// dwa
+const sendRequest = () => {
+  getActiveTab().then((tabs) => {
+    browser.tabs.sendMessage(tabs[0].id, 'kolok');
+  });
+};
 
 const continueButton = document.getElementById('continue');
 continueButton.addEventListener('click', copyToClipboard);
