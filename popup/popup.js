@@ -76,6 +76,13 @@ function copyToClipboard() {
   );
 }
 
+const addToLocalStorage = () => {
+  notebook.push(currentNote);
+  browser.storage.sync.set({ notebook });
+  counterUpdate();
+  // console.log(notebook);
+};
+
 // binds
 
 const endButton = document.getElementById('end');
@@ -83,6 +90,9 @@ endButton.addEventListener('click', createTXT);
 
 const copyButton = document.getElementById('copy');
 copyButton.addEventListener('click', copyToClipboard);
+
+const addToLocalStorageButton = document.getElementById('addLS');
+addToLocalStorageButton.addEventListener('click', addToLocalStorage);
 
 // in extension communication:
 // jeden
@@ -102,20 +112,10 @@ browser.runtime.onMessage.addListener((message) => {
   currentNote.timeStamp = message.timeStamp;
 });
 
-const addToLocalStorage = () => {
-  notebook.push(currentNote);
-  browser.storage.sync.set({ notebook });
-  counterUpdate();
-  // console.log(notebook);
-};
-
 const counterUpdate = () => {
   const counter = document.getElementById('counter');
   counter.innerText = notebook.length;
 };
-
-const addToLocalStorageButton = document.getElementById('addLS');
-addToLocalStorageButton.addEventListener('click', addToLocalStorage);
 
 const loadData = async () => {
   console.log('loadData fired');
