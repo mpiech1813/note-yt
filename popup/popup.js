@@ -81,6 +81,9 @@ function copyToClipboard() {
 const endButton = document.getElementById('end');
 endButton.addEventListener('click', createTXT);
 
+const copyButton = document.getElementById('copy');
+copyButton.addEventListener('click', copyToClipboard);
+
 // in extension communication:
 // jeden
 function getActiveTab() {
@@ -92,9 +95,6 @@ const sendRequest = () => {
     browser.tabs.sendMessage(tabs[0].id, 'kolok');
   });
 };
-
-const continueButton = document.getElementById('continue');
-continueButton.addEventListener('click', copyToClipboard);
 
 browser.runtime.onMessage.addListener((message) => {
   currentNote.title = message.title;
