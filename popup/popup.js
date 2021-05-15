@@ -1,5 +1,3 @@
-// popup must find a way to listen to data, maybe cookies?
-
 let notebook = [];
 
 let currentNote = {
@@ -17,12 +15,10 @@ form.onsubmit = (e) => {
   currentNote.quickNote = note.value;
   form.reset();
 
-  if (!title.checked) delete currentNote.title;
-  if (!link.checked) delete currentNote.link;
-  if (!stamp.checked) delete currentNote.timeStamp;
-
   sendRequest();
 };
+
+// -------------------------   functions   -------------------------
 
 const downloadToFile = (content, filename, contentType) => {
   const a = document.createElement('a');
@@ -60,19 +56,6 @@ function createTXT() {
   downloadToFile(textArea, `Note.txt`, 'text/plain');
 }
 
-const endButton = document.getElementById('end');
-endButton.addEventListener('click', createTXT);
-// jeden
-function getActiveTab() {
-  return browser.tabs.query({ active: true, currentWindow: true });
-}
-// dwa
-const sendRequest = () => {
-  getActiveTab().then((tabs) => {
-    browser.tabs.sendMessage(tabs[0].id, 'kolok');
-  });
-};
-
 function copyToClipboard() {
   let textArea = `
     URL: ${currentNote.link}
@@ -93,15 +76,6 @@ function copyToClipboard() {
   );
 }
 
-const continueButton = document.getElementById('continue');
-continueButton.addEventListener('click', copyToClipboard);
-
-browser.runtime.onMessage.addListener((message) => {
-  currentNote.title = message.title;
-  currentNote.link = message.url;
-  currentNote.timeStamp = message.timeStamp;
-});
-
 const addToLocalStorage = () => {
   notebook.push(currentNote);
   browser.storage.sync.set({ notebook });
@@ -114,9 +88,6 @@ const counterUpdate = () => {
   counter.innerText = notebook.length;
 };
 
-const addToLocalStorageButton = document.getElementById('addLS');
-addToLocalStorageButton.addEventListener('click', addToLocalStorage);
-
 const loadData = async () => {
   console.log('loadData fired');
   let notebookFromStore = await browser.storage.sync.get('notebook');
@@ -126,12 +97,41 @@ const loadData = async () => {
   counterUpdate();
 };
 
-document.addEventListener('DOMContentLoaded', loadData);
-
 const displayDataFromStorage = async () => {
   await browser.storage.sync.remove('notebook');
   counterUpdate();
 };
 
+// -------------------------   binds   -------------------------
+
+const endButton = document.getElementById('end');
+endButton.addEventListener('click', createTXT);
+
+const copyButton = document.getElementById('copy');
+copyButton.addEventListener('click', copyToClipboard);
+
+const addToLocalStorageButton = document.getElementById('addLS');
+addToLocalStorageButton.addEventListener('click', addToLocalStorage);
+
 const displayButton = document.getElementById('display');
 displayButton.addEventListener('click', displayDataFromStorage);
+
+// in extension communication:
+// jeden
+function getActiveTab() {
+  return browser.tabs.query({ active: true, currentWindow: true });
+}
+// dwa
+const sendRequest = () => {
+  getActiveTab().then((tabs) => {
+    browser.tabs.sendMessage(tabs[0].id, 'kolok');
+  });
+};
+
+browser.runtime.onMessage.addListener((message) => {
+  currentNote.title = message.title;
+  currentNote.link = message.url;
+  currentNote.timeStamp = message.timeStamp;
+});
+
+document.addEventListener('DOMContentLoaded', loadData);

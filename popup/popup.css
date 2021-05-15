@@ -16,7 +16,7 @@ body {
     box-shadow: none;
   }
   50% {
-    box-shadow: 2px 2px 4px greenyellow;
+    box-shadow: 1px 1px 8px greenyellow;
   }
   100% {
     box-shadow: none;
